@@ -1,4 +1,15 @@
-<script setup lang="ts">
+<script setup>
+  const form = ref({
+    email: '',
+    password: ''
+  });
+
+  async function submit() {
+    const response = await $fetch('/api/user', {
+      method: 'POST',
+      body: form.value
+    });
+  };
 
 </script>
 
@@ -11,22 +22,31 @@
       <p class="text-zinc-300 text-sm mt-0.5">Already registered?
         <span class="font-bold text-[#FFAC00] underline">Login</span>
         to your account</p>
-      <div class="mt-8">
-        <label for="email" class="text-zinc-300 text-sm font-normal block mb-0.5">Email Address</label>
-        <input id="email" type="email" placeholder="you@example.com" class="block w-full bg-[#27272A] border border-[#3F3F46] rounded text-white text-sm px-4 py-2 placeholder:text-zinc-500"/>
-      </div>
-      <div class="mt-6">
-        <label for="password" class="text-zinc-300 text-sm font-normal block mb-0.5">Password</label>
-        <input id="password" type="password" placeholder="********" class="block w-full bg-[#27272A] border border-[#3F3F46] rounded text-white text-sm px-4 py-2 placeholder:text-zinc-500"/>
-      </div>
-      <!--signup button-->
-      <div>
-        <button class="w-full flex items-center justify-center space-x-2 mt-4 bg-[#FFAC00] rounded-full px-4 py-2 text-sm font-bold">
-          <span>Sign Up </span>
-          <ArrowRight />
-        </button>
-      </div>
-      <!--/signup button-->
+        <!--login-form-->
+        <form @submit.prevent="submit">
+            <div class="mt-8">
+              <label for="email" class="text-zinc-300 text-sm font-normal block mb-0.5">Email Address</label>
+              <input 
+                id="email" type="email" 
+                v-model="form.email" 
+                placeholder="you@example.com" 
+                class="block w-full bg-[#27272A] border border-[#3F3F46] rounded text-white text-sm px-4 py-2 placeholder:text-zinc-500"
+              />
+            </div>
+            <div class="mt-6">
+              <label for="password" class="text-zinc-300 text-sm font-normal block mb-0.5">Password</label>
+              <input id="password" type="password" v-model="form.password" placeholder="********" class="block w-full bg-[#27272A] border border-[#3F3F46] rounded text-white text-sm px-4 py-2 placeholder:text-zinc-500"/>
+            </div>
+            <!--signup button-->
+            <div>
+              <button class="w-full flex items-center justify-center space-x-2 mt-4 bg-[#FFAC00] rounded-full px-4 py-2 text-sm font-bold cursor-pointer">
+                <span>Sign Up </span>
+                <ArrowRight />
+              </button>
+            </div>
+            <!--/signup button-->
+        </form>
+        <!--/login-form-->
     </div>
     <!--/sidebar-->
     <!--introduction-->
