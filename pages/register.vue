@@ -1,16 +1,27 @@
 <script setup>
+  import Swal from 'sweetalert2';
+
   const form = ref({
     email: '',
     password: ''
   });
 
   async function submit() {
-    const response = await $fetch('/api/user', {
-      method: 'POST',
-      body: form.value
-    });
-
-    console.log(response)
+    try {
+      const response = await $fetch('/api/user', {
+          method: 'POST',
+          body: form.value
+      });
+    } catch(error) {
+      console.log('ERROR')
+      console.log(error.response?._data?.message)
+      Swal.fire({
+        title: 'Error!',
+        text: error.response?._data?.message,
+        icon: 'error',
+        confirmButtonText: 'Close'
+      }) 
+    }
   };
 
 </script>
