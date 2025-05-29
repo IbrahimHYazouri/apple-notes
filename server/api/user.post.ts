@@ -1,11 +1,17 @@
-import prisma from "@/server/utils/prisma"
+import bcrypt from "bcryptjs";
+import prisma from "@/server/utils/prisma";
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event);
-	const user = await prisma.user.create({
+	
+	const salt = await bcrypt.genSalt(10);
+	const hashedPassword = await bcrypt.hash(body.password, salt);
+
+	await prisma.user.create({
 		data: {
 		  email: body.email,
-		  password: body.password,
+		  password: hashedPassword,
+		  salt: salt
 		},
 	});
 
