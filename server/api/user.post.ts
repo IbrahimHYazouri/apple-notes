@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
 		const schema = {
 			email: ['required', 'email'],
-			password: ['required', 'strong-password']
+			password: ['required', 'min:8']
 		};
 
 		const messages = {
