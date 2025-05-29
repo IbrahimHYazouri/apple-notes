@@ -11,4 +11,5 @@ model user {
   id       Int    @id @default(autoincrement())
   email    String @unique(map: "User_email_key")
   password String
+  salt     String
 }
