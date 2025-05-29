@@ -12,9 +12,19 @@
           method: 'POST',
           body: form.value
       });
+
+      Swal.fire({
+        title: 'Success!',
+        text: 'Account created successfully',
+        icon: 'success',
+        confirmButtonText: 'Close'
+      });
+
+      form.value = {
+        email: '',
+        password: ''
+      }
     } catch(error) {
-      console.log('ERROR')
-      console.log(error.response?._data?.message)
       Swal.fire({
         title: 'Error!',
         text: error.response?._data?.message,
