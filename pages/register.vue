@@ -9,6 +9,8 @@
       method: 'POST',
       body: form.value
     });
+
+    console.log(response)
   };
 
 </script>
