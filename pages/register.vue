@@ -13,16 +13,19 @@
           body: form.value
       });
 
-      Swal.fire({
+      const { isConfirmed } = await Swal.fire({
         title: 'Success!',
         text: 'Account created successfully',
         icon: 'success',
         confirmButtonText: 'Close'
       });
 
-      form.value = {
-        email: '',
-        password: ''
+      if (isConfirmed) {
+        form.value = {
+          email: '',
+          password: ''
+        }
+        navigateTo('/')
       }
     } catch(error) {
       Swal.fire({

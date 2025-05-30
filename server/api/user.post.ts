@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import {Validator} from 'sureform';
 import prisma from "@/server/utils/prisma";
+import jwt from "jsonwebtoken"
 
 export default defineEventHandler(async (event) => {
 	try {
@@ -34,13 +35,16 @@ export default defineEventHandler(async (event) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(body.password, salt);
 
-		await prisma.user.create({
+		const user = await prisma.user.create({
 			data: {
 			  email: body.email,
 			  password: hashedPassword,
 			  salt: salt
 			},
 		});
+
+		const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET)
+		setCookie(event, 'NoteNestJWT', token)
 
 		return {data: 'success'};
 	} catch(error) {
