@@ -46,7 +46,7 @@
       <AppLogo />
       <h1 class="text-white font-bold text-lg mt-8">Sign up for a free account</h1>
       <p class="text-zinc-300 text-sm mt-0.5">Already registered?
-        <span class="font-bold text-[#FFAC00] underline">Login</span>
+        <nuxt-link to='/login' class="font-bold text-[#FFAC00] underline">Login</nuxt-link>
         to your account</p>
         <!--login-form-->
         <form @submit.prevent="submit">
