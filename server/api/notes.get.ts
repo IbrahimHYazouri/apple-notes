@@ -14,7 +14,6 @@ export default defineEventHandler(async (event) => {
 		}
 
 		const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
-		console.log(decodedToken)
 		const notes = await prisma.note.findMany({
 			where: {
 				userId: decodedToken.id
