@@ -28,6 +28,7 @@
     		return noteDate < yesterday && noteDate.toDateString() !== yesterday.toDateString();
   		});
 	});
+	const updatedNote = ref("");
   	const selectedNote = ref({});
 
 	onMounted(async () => {
@@ -36,7 +37,27 @@
 		if (notes.value.length > 0) {
 			selectedNote.value = notes.value[0];			
 		}
-	})
+
+		updatedNote.value = selectedNote.value.text;
+	});
+
+	const debouncedFn = useDebounceFn(async () => {
+		await updateNote();
+	}, 2000)
+
+	async function updateNote() {
+		try {
+			await $fetch(`/api/notes/${selectedNote.value.id}`, 
+			{
+				method: 'PATCH',
+				body: {
+					updatedNote: updatedNote.value
+				}
+			})
+		} catch(error) {
+			console.log(error)
+		}
+	}
 </script>
 
 <template>
@@ -90,7 +111,7 @@
     <!--/sidebar-->
 
     <!--note-container-->
-    <div class="w-full p-8">
+    <div class="w-full p-8 flex flex-col">
     	<!--header-->
     	<header class="flex justify-between">
     		<button class="text-xs text-[#C2C2C5] font-bold inline-flex space-x-2 cursor-pointer hover:text-white transition-colors duration-200">
@@ -101,16 +122,20 @@
     	</header>
     	<!--/header-->
 
-    	<!--note-content-->
-    	<section class="max-w-[437px] mx-auto">
+    	<!--note-text-->
+    	<section class="max-w-[437px] w-full flex-grow mx-auto flex flex-col">
     		<p class="text-[#929292] font-playfair mt-4">
     			{{ new Date(selectedNote.updatedAt).toDateString() }}
     		</p>
-    		<p class="text-[#D4D4D4] font-playfair my-4">
-    			{{ selectedNote.text }}
-    		</p>
+    		<textarea 
+    			name="note"
+    			id="note"
+    			v-model="updatedNote"
+    			class="text-[#D4D4D4] bg-transparent font-playfair my-4 resize-none flex-grow focus:outline-none"
+    			@input="debouncedFn"
+    		></textarea>
     	</section>
-    	<!--/note-content-->
+    	<!--/note-text-->
 
     </div>
     <!--/note-container-->
