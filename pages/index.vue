@@ -51,6 +51,9 @@
 
 		if (notes.value.length > 0) {
 			selectedNote.value = notes.value[0];			
+		} else {
+			await createNote();
+			selectedNote.value = notes.value[0];
 		}
 
 		updatedNote.value = selectedNote.value.text;
@@ -82,6 +85,7 @@
 	}
 
 	async function deleteNote() {
+		if (selectedNote.value.id === undefined) return;
 		try {
 			const deletedNote = await $fetch(`/api/notes/${selectedNote.value.id}`, 
 			{
@@ -91,19 +95,29 @@
 			notes.value = notes.value.filter((note) => {
 				return note.id !== deletedNote.id
 			});
-			selectedNote.value = {};
-			updatedNote.value = "";
+			if (notes.value.length > 0) {
+				selectedNote.value = notes.value[0];
+				updatedNote.value = selectedNote.value.text;
+			}
 		} catch(error) {
 			console.log(error);
 		}
+	}
+
+	function logout() {
+		const jwtCookie = useCookie('NoteNestJWT');
+		jwtCookie.value = null;
+		navigateTo('/login');
 	}
 </script>
 
 <template>
   <div class="bg-zinc-900 h-screen flex">
     <!--sidebar-->
-    <section class="bg-black w-[338px] p-8">
-      <AppLogo />
+    <section class="bg-black w-[338px] p-8 flex flex-col overflow-y-auto h-screen custom-scroll">
+      <div>
+      	<AppLogo />
+      </div>
 
       <div class="ml-2">
       	<!--today-container-->
@@ -159,8 +173,7 @@
     		</button>
     		<button 
     			@click="deleteNote" 
-    			class="cursor-pointer"
-    			@disable="!selectedNote"
+    			class="cursor-pointer text-white"
 			>
     			<TrashIcon class="text-zinc-700 hover:text-white transition-colors duration-200" />
     		</button>
