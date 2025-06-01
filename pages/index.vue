@@ -80,6 +80,23 @@
 			console.log(error)
 		}
 	}
+
+	async function deleteNote() {
+		try {
+			const deletedNote = await $fetch(`/api/notes/${selectedNote.value.id}`, 
+			{
+				method: 'DELETE'
+			})
+
+			notes.value = notes.value.filter((note) => {
+				return note.id !== deletedNote.id
+			});
+			selectedNote.value = {};
+			updatedNote.value = "";
+		} catch(error) {
+			console.log(error);
+		}
+	}
 </script>
 
 <template>
@@ -140,7 +157,13 @@
     			<PencilIcon /> 
     			<span @click="createNote">Create Note</span>
     		</button>
-    		<button class="cursor-pointer"><TrashIcon class="text-zinc-700 hover:text-white transition-colors duration-200" /></button>
+    		<button 
+    			@click="deleteNote" 
+    			class="cursor-pointer"
+    			@disable="!selectedNote"
+			>
+    			<TrashIcon class="text-zinc-700 hover:text-white transition-colors duration-200" />
+    		</button>
     	</header>
     	<!--/header-->
 
@@ -163,6 +186,10 @@
     	</section>
     	<!--/note-text-->
 
+    <button 
+    	@click="logout"
+    	class="text-zinc-400 text-sm font-bold absolute right-0 bottom-0 p-8 hover:text-white transition-colors duration-200"
+    >Logout</button>
     </div>
     <!--/note-container-->
   </div>
