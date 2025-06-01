@@ -14,8 +14,7 @@
   		<div class="text-xs leading-none truncate text-[#D6D6D6]">
   			<span class="text-[#F4F4F5] mr-4">
 				{{
-  					new Date(note.updatedAt).toDateString() ===new Date().toDateString()
-	      					? 'Today' : new Date(note.updatedAt			).toLocaleDateString()
+  					new Date(note.updatedAt).toLocaleDateString()
   				}}
   			</span>
   			<span class="text-[#D6D6D6] truncate">

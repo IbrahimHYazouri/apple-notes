@@ -8,7 +8,7 @@
   		return notes.value.filter((note) => {
 	  		const noteDate = new Date(note.updatedAt);
 	  		return noteDate.toDateString() === (new Date()).toDateString();
-  		});
+  		}).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
   	});
   	const yesterdaysNotes = computed(() => {
   		const yesterday = new Date();
@@ -30,16 +30,38 @@
 	});
 	const updatedNote = ref("");
   	const selectedNote = ref({});
+  	const noteContent = ref(null);
+
+  	async function createNote() {
+  		try {
+  			const newNote = await $fetch('/api/notes', {
+  				method: 'POST'
+  			});
+
+  			notes.value.unshift(newNote);
+  			selectNote(newNote);
+  		} catch(error) {
+			console.log(error);
+  		}
+  	}
 
 	onMounted(async () => {
 		notes.value = await $fetch('/api/notes');
+		notes.value.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
 		if (notes.value.length > 0) {
 			selectedNote.value = notes.value[0];			
 		}
 
 		updatedNote.value = selectedNote.value.text;
+		noteContent.value.focus();
 	});
+
+	function selectNote(note) {
+		selectedNote.value = note;
+		updatedNote.value = note.text;
+		noteContent.value.focus();
+	}
 
 	const debouncedFn = useDebounceFn(async () => {
 		await updateNote();
@@ -58,6 +80,23 @@
 			console.log(error)
 		}
 	}
+
+	async function deleteNote() {
+		try {
+			const deletedNote = await $fetch(`/api/notes/${selectedNote.value.id}`, 
+			{
+				method: 'DELETE'
+			})
+
+			notes.value = notes.value.filter((note) => {
+				return note.id !== deletedNote.id
+			});
+			selectedNote.value = {};
+			updatedNote.value = "";
+		} catch(error) {
+			console.log(error);
+		}
+	}
 </script>
 
 <template>
@@ -74,7 +113,7 @@
         		v-for="note in todaysNotes"
         		:note="note"
         		:class="{'bg-[#A1842C]': note.id === selectedNote.id, 'hover:bg-[#A1842C]/50': note.id !== selectedNote.id}"
-	      		@click="selectedNote = note"
+	      		@click="selectNote(note)"
         	/>
         </div>
       </div>
@@ -88,7 +127,7 @@
         		v-for="note in yesterdaysNotes"
         		:note="note"
         		:class="{'bg-[#A1842C]': note.id === selectedNote.id, 'hover:bg-[#A1842C]/50': note.id !== selectedNote.id}"
-	      		@click="selectedNote = note"
+	      		@click="selectNote(note)"
         	/>
         </div>
       </div>
@@ -102,7 +141,7 @@
         		v-for="note in earlierNotes"
         		:note="note"
         		:class="{'bg-[#A1842C]': note.id === selectedNote.id, 'hover:bg-[#A1842C]/50': note.id !== selectedNote.id}"
-	      		@click="selectedNote = note"
+	      		@click="selectNote(note)"
         	/>
         </div>
       </div>
@@ -116,9 +155,15 @@
     	<header class="flex justify-between">
     		<button class="text-xs text-[#C2C2C5] font-bold inline-flex space-x-2 cursor-pointer hover:text-white transition-colors duration-200">
     			<PencilIcon /> 
-    			<span>Create Note</span>
+    			<span @click="createNote">Create Note</span>
     		</button>
-    		<button class="cursor-pointer"><TrashIcon class="text-zinc-700 hover:text-white transition-colors duration-200" /></button>
+    		<button 
+    			@click="deleteNote" 
+    			class="cursor-pointer"
+    			@disable="!selectedNote"
+			>
+    			<TrashIcon class="text-zinc-700 hover:text-white transition-colors duration-200" />
+    		</button>
     	</header>
     	<!--/header-->
 
@@ -130,13 +175,21 @@
     		<textarea 
     			name="note"
     			id="note"
+    			ref="noteContent"
     			v-model="updatedNote"
     			class="text-[#D4D4D4] bg-transparent font-playfair my-4 resize-none flex-grow focus:outline-none"
-    			@input="debouncedFn"
+    			@input="() => {
+    				debouncedFn();
+    				selectedNote.text = updatedNote 
+    			}"
     		></textarea>
     	</section>
     	<!--/note-text-->
 
+    <button 
+    	@click="logout"
+    	class="text-zinc-400 text-sm font-bold absolute right-0 bottom-0 p-8 hover:text-white transition-colors duration-200"
+    >Logout</button>
     </div>
     <!--/note-container-->
   </div>
