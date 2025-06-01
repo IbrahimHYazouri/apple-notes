@@ -1,4 +1,3 @@
-
 # Apple Notes Clone
 
 A minimal full-stack notes app built with **Nuxt 3**, **Prisma**, and **TypeScript** — inspired by Apple Notes. This app supports user authentication, note creation, editing, deletion, and JWT-based session handling.
@@ -75,14 +74,14 @@ npm run dev
 
 ## 📸 Screenshots
 
-### 🏠 Dashboard
-![Dashboard](image-3.png)
+### 📝 Register
+![Register](./screenshots/register.png)
 
 ### 🔐 Login
-![Login](image.png)
+![Login](./screenshots/login.png)
 
-### 📝 Register
-![Register](image-2.png)
+### 🏠 Dashboard
+![Dashboard](./screenshots/dashboard.png)
 
 ## 🪪 License
 
