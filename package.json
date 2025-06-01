@@ -12,6 +12,8 @@
   "dependencies": {
     "@nuxtjs/tailwindcss": "^7.0.0-beta.0",
     "@prisma/client": "^6.8.2",
+    "@vueuse/core": "^13.3.0",
+    "@vueuse/nuxt": "^13.3.0",
     "bcryptjs": "^3.0.2",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.17.4",
