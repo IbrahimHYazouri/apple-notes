@@ -2,16 +2,16 @@
 
 A minimal full-stack notes app built with **Nuxt 3**, **Prisma**, and **TypeScript** — inspired by Apple Notes. This app supports user authentication, note creation, editing, deletion, and JWT-based session handling.
 
-## 🚀 Features
+## Features
 
-- 📝 Create, edit, and delete notes
-- 🔐 User authentication (register/login)
-- 🧾 JWT-based session management
-- 📦 Prisma ORM with MySQL
-- ⚡ Minimal UI with Vue 3 components
-- 📁 REST API endpoints for interaction
+- Create, edit, and delete notes
+- User authentication (register/login)
+- JWT-based session management
+- Prisma ORM with MySQL
+- Minimal UI with Vue 3 components
+- REST API endpoints for interaction
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - [Nuxt 3](https://nuxt.com) + Vue 3 + TypeScript
 - [Prisma ORM](https://www.prisma.io/)
@@ -20,7 +20,7 @@ A minimal full-stack notes app built with **Nuxt 3**, **Prisma**, and **TypeScri
 - MySQL (via Prisma)
 - JSON Web Tokens (JWT)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 components/       # Vue UI components (NoteCard, Icons)
@@ -34,7 +34,7 @@ prisma/           # Prisma schema & migrations
 public/           # Static assets
 ```
 
-## 🧪 API Overview
+## API Overview
 
 | Endpoint           | Method | Description            |
 |--------------------|--------|------------------------|
@@ -47,7 +47,7 @@ public/           # Static assets
 
 All secured routes require a valid JWT token.
 
-## 🧬 Prisma Schema
+## Prisma Schema
 
 Located in `prisma/schema.prisma`, the schema defines:
 
@@ -56,7 +56,7 @@ Located in `prisma/schema.prisma`, the schema defines:
 
 Migrations are located in `prisma/migrations/`.
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ```bash
 # Install dependencies
@@ -72,15 +72,15 @@ npx prisma migrate dev
 npm run dev
 ```
 
-## 📸 Screenshots
+## Screenshots
 
-### 📝 Register
+### Register
 ![Register](./screenshots/register.png)
 
-### 🔐 Login
+### Login
 ![Login](./screenshots/login.png)
 
-### 🏠 Dashboard
+### Dashboard
 ![Dashboard](./screenshots/dashboard.png)
 
 ## 🪪 License
